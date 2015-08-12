@@ -1,16 +1,10 @@
 #ifndef RTPROTOCOL_H
 #define RTPROTOCOL_H
 #include "RTPacket.h"
-#pragma warning( push )
-#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "StdString.h"
-#pragma warning( pop
 
 #include <vector>
 #include "Network.h"
-
-
-#pragma warning (disable : 4251)
 
 
 #ifdef EXPORT_DLL
@@ -18,8 +12,8 @@
 #else
 #define DLL_EXPORT
 #endif
-// added some unicaode defintion for Linux probably not all are neccesssary
-#ifdef UNICODE 
+// added some unicode defintion for Linux probably not all are neccesssary
+#ifdef UNICODE
 
 #define _tcslen     wcslen
 #define _tcscpy     wcscpy
@@ -68,7 +62,7 @@
 
 #define _tscanf     scanf
 
-#define _TCHAR char
+#define _TCHAR const char
 #endif
 
 #define DEFAULT_AUTO_DESCOVER_PORT 22226
@@ -86,7 +80,7 @@ public:
         RateFrequencyDivisor = 3
     };
 
-    enum EComponentType 
+    enum EComponentType
     {
         Component3d            = 0x0001,
         Component3dNoLabels    = 0x0002,
@@ -207,7 +201,7 @@ private:
         unsigned int nMarkerExposure;     // Micro seconds
         unsigned int nMarkerExposureMin;  // Micro seconds
         unsigned int nMarkerExposureMax;  // Micro seconds
-        unsigned int nMarkerThreshold;   
+        unsigned int nMarkerThreshold;
         unsigned int nMarkerThresholdMin;
         unsigned int nMarkerThresholdMax;
         float        fPositionX;
@@ -277,7 +271,7 @@ private:
         std::vector< SPoint > vsPoints;
     };
 
-    struct SAnalogDevice 
+    struct SAnalogDevice
     {
         unsigned int               nDeviceID;
         unsigned int               nChannels;
@@ -286,7 +280,7 @@ private:
         unsigned int               nFrequency;
         CStdStringA                oUnit;
         unsigned int               nMinRange;
-        unsigned int               nMaxRange;        
+        unsigned int               nMaxRange;
     };
 
     struct SForceChannel
@@ -295,7 +289,7 @@ private:
         float        fConversionFactor;
     };
 
-    struct SForcePlate 
+    struct SForcePlate
     {
         unsigned int                 nID;
         unsigned int                 nAnalogDeviceID;
@@ -385,7 +379,7 @@ public:
                                        float        &fNominalFrequency,   bool          &bNegativeEdge,
                                        unsigned int &nSignalShutterDelay, float         &fNonPeriodicTimeout);
     unsigned int GetGeneralCameraCount();
-    bool         GetGeneralCamera(unsigned int nCameraIndex, unsigned int &nID,     ECameraModel &eModel, 
+    bool         GetGeneralCamera(unsigned int nCameraIndex, unsigned int &nID,     ECameraModel &eModel,
                                   bool         &bUnderwater, unsigned int &nSerial, ECameraMode  &eMode);
     bool         GetGeneralCameraMarker(unsigned int nCameraIndex, unsigned int &nCurrentExposure,
                                         unsigned int &nMinExposure, unsigned int &nMaxExposure,

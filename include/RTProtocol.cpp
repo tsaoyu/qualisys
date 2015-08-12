@@ -1,6 +1,3 @@
-
-#pragma warning( push )
-#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "RTProtocol.h"
 #include "NBC_Markup.h"
 #include "Network.h"
@@ -9,11 +6,8 @@
 #include <string.h>
 #include <float.h>
 #include <inet.h>
-// windows stuff...#include <iphlpapi.h>
-// import the internet protocol helper library.
-#pragma comment(lib, "IPHLPAPI.lib")
 
-#define SOCKET_ERROR -1;
+#define SOCKET_ERROR -1
 
 CRTProtocol::CRTProtocol()
 {
@@ -80,7 +74,7 @@ bool CRTProtocol::Connect(char* pServerAddr, int nPort, int nUDPServerPort,
         {
             if (mpoNetwork->CreateUDPSocket(nUDPServerPort) == false)
             {
-				//----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
                 printf( "CreateUDPSocket failed. %s", mpoNetwork->GetErrorString());
                 //----------------------------------------------------------------------------------------------------
                 Disconnect();
@@ -88,8 +82,8 @@ bool CRTProtocol::Connect(char* pServerAddr, int nPort, int nUDPServerPort,
                 return false;
             }
         }
-	
-		bool check=ReceiveRTPacket(eType, true);
+
+    bool check=ReceiveRTPacket(eType, true);
         // Welcome message
         if (check)
         {
@@ -102,8 +96,8 @@ bool CRTProtocol::Connect(char* pServerAddr, int nPort, int nUDPServerPort,
             }
             if (eType == CRTPacket::PacketCommand)
             {
-				
-				printf("%s\n",mpoRTPacket->GetCommandString());
+
+        printf("%s\n",mpoRTPacket->GetCommandString());
                 if (strncmp("QTM RT Interface connected", mpoRTPacket->GetCommandString(), sizeof("QTM RT Interface connected")) == 0)
                 {
                     // Set protocol version
@@ -129,8 +123,8 @@ bool CRTProtocol::Connect(char* pServerAddr, int nPort, int nUDPServerPort,
                             }
                             else
                             {
-								//changed sprintf_s to snprintf for Linux -------------------
-								 snprintf(maErrorStr, sizeof(maErrorStr), "Set byte order failed.");
+                //changed sprintf_s to snprintf for Linux -------------------
+                 snprintf(maErrorStr, sizeof(maErrorStr), "Set byte order failed.");
                             }
                         }
                         else
@@ -156,7 +150,7 @@ bool CRTProtocol::Connect(char* pServerAddr, int nPort, int nUDPServerPort,
         }
         else
         {
-			//changed sprintf_s to snprintf for Linux -------------------
+      //changed sprintf_s to snprintf for Linux -------------------
             snprintf(maErrorStr, sizeof(maErrorStr), "%s", mpoNetwork->GetErrorString());
             //-----------------------------------------------------------------------------
         }
@@ -292,8 +286,8 @@ bool CRTProtocol::CheckLicense(char* pLicenseCode)
 bool CRTProtocol::DiscoverRTServer(short nServerPort, bool bNoLocalResponses, short nDiscoverPort)
 {
     char pData[10];
-    SDiscoverResponse sResponse;        
-    
+    SDiscoverResponse sResponse;
+
     *((unsigned int*)pData)         = (unsigned int)10;
     *((unsigned int*)(pData + 4))   = (unsigned int)CRTPacket::PacketDiscover;
     *((unsigned short*)(pData + 8)) = htons(nServerPort);
@@ -307,7 +301,7 @@ bool CRTProtocol::DiscoverRTServer(short nServerPort, bool bNoLocalResponses, sh
 
             mvsDiscoverResponseList.clear();
 
-            do 
+            do
             {
                 nReceived = mpoNetwork->Receive(maDataBuff, sizeof(maDataBuff), false, 100000, &nAddr);
                 if (nReceived != -1 && nReceived > 8)
@@ -446,7 +440,7 @@ bool CRTProtocol::GetState(CRTPacket::EEvent &eEvent, bool bUpdate)
     {
         if (SendCommand("GetLastEvent"))
         {
-            do 
+            do
             {
                 if (ReceiveRTPacket(eType, false) == false)
                 {
@@ -577,7 +571,7 @@ bool CRTProtocol::SetQTMEvent(char* pLabel)
 
     if (strlen(pLabel) <= 92)
     {
-        sprintf(tTemp, "SetQTMEvent %s",
+        sprintf(tTemp, "%s %s",
                 (mnMajorVersion > 1 || mnMinorVersion > 7) ? "SetQTMEvent" : "Event", pLabel);
 
         if (SendCommand(tTemp, pResponseStr, sizeof(pResponseStr)))
@@ -798,7 +792,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
 
     eType = CRTPacket::PacketNone;
 
-    do 
+    do
     {
         nRecved      = 0;
         nRecvedTotal = 0;
@@ -829,7 +823,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
         eType      = mpoRTPacket->GetType(maDataBuff);
         //printf ("%s", maDataBuff);
         unsigned int nReadSize;
-		//printf("eType: %d\n", eType);
+    //printf("eType: %d\n", eType);
         if (eType == CRTPacket::PacketC3DFile || eType == CRTPacket::PacketQTMFile)
         {
             if (mpFileBuffer != NULL)
@@ -844,7 +838,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
                     return NULL;
                 }
                 // Receive more data until we have read the whole packet
-                while (nRecvedTotal < nFrameSize) 
+                while (nRecvedTotal < nFrameSize)
                 {
                     nReadSize = nFrameSize - nRecvedTotal;
                     if (nFrameSize > sizeof(maDataBuff))
@@ -894,7 +888,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
             }
 
             // Receive more data until we have read the whole packet
-            while (nRecvedTotal < nFrameSize) 
+            while (nRecvedTotal < nFrameSize)
             {
                 // As long as we haven't received enough data, wait for more
                // printf("second recieve\n");
@@ -918,13 +912,13 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
             }
         }
         //printf ("%s", maDataBuff);
-		//printf ("SetData");
+    //printf ("SetData");
         mpoRTPacket->SetData(maDataBuff);
         mpoRTPacket->GetEvent(meLastEvent); // Update last event if there is an event
         //printf ("SetData done \n");
 
     } while (bSkipEvents && eType == CRTPacket::PacketEvent);
-    
+
     if (nRecvedTotal == nFrameSize)
     {
         return mpoRTPacket;
@@ -962,7 +956,7 @@ bool CRTProtocol::ReadGeneralSettings()
                 {
                     if (oXML.FindChildElem("Frequency"))
                     {
-						msGeneralSettings.nCaptureFrequency = atoi(oXML.GetChildData().c_str());
+            msGeneralSettings.nCaptureFrequency = atoi(oXML.GetChildData().c_str());
                         if (oXML.FindChildElem("Capture_Time"))
                         {
                             msGeneralSettings.fCaptureTime = (float)atof(oXML.GetChildData().c_str());
@@ -2276,7 +2270,7 @@ bool CRTProtocol::Read6DOFSettings()
         snprintf(maErrorStr, sizeof(maErrorStr), "GetParameters 6D failed");
          printf( "GetParameters 6D failed");
     }
-    printf( "return %d\n", bReturn);
+    //printf( "return %d\n", bReturn);
     return bReturn;
 } // Read6DOFSettings
 
@@ -3223,7 +3217,7 @@ bool CRTProtocol::GetForcePlateChannel(unsigned int nPlateIndex, unsigned int nC
         }
         else
         {
-            snprintf(maErrorStr, sizeof(maErrorStr), "No channel index % on force plate index %d.", nChannelIndex, nPlateIndex);
+            snprintf(maErrorStr, sizeof(maErrorStr), "No channel index %d on force plate index %d.", nChannelIndex, nPlateIndex);
         }
     }
     else
@@ -3396,7 +3390,7 @@ bool CRTProtocol::SetGeneralExtTimeBase(const bool*         bEnabled,           
     AddXMLElementUnsignedInt(&oXML, "Signal_Shutter_Delay", nSignalShutterDelay);
     AddXMLElementFloat(&oXML, "Non_Periodic_Timeout", fNonPeriodicTimeout, 3);
 
-    oXML.OutOfElem(); // External_Time_Base            
+    oXML.OutOfElem(); // External_Time_Base
     oXML.OutOfElem(); // General
     oXML.OutOfElem(); // QTM_Settings
 
@@ -3498,7 +3492,7 @@ bool CRTProtocol::SetGeneralCameraSyncOut(const unsigned int  nCameraID,       c
             case ModeActualFreq :
                 tVal.Format("Camera independent");
                 break;
-            case ModeMeasurementTime :  
+            case ModeMeasurementTime :
                 tVal.Format("Measurement time");
                 break;
             case ModeFixed100Hz :
@@ -3926,5 +3920,3 @@ void CRTProtocol::AddXMLElementFloat(CMarkup* oXML, _TCHAR* tTag, const float* p
         oXML->AddElem(tTag, tVal);
     }
 }
-
-#pragma warning( pop )
