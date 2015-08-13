@@ -1313,8 +1313,8 @@ inline void	ssasn(std::string& sDst, const std::wstring& sSrc)
 #endif
 
 		sDst.resize(nDst+1);
-		PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()), nDst,
-			sSrc.c_str(), static_cast<int>(sSrc.size()));
+		//PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()), nDst,
+		//	sSrc.c_str(), static_cast<int>(sSrc.size()));
 
 		// In MBCS builds, we don't know how long the destination string will be.
 
@@ -1464,8 +1464,8 @@ inline void	ssadd(std::string& sDst, const std::wstring& sSrc)
 #endif
 
 		sDst.resize(nDst+nAdd+1);
-		PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()+nDst),
-			nAdd, sSrc.c_str(), nSrc);
+		//PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()+nDst),
+		//	nAdd, sSrc.c_str(), nSrc);
 
 #ifdef SS_MBCS
 		sDst.resize(nDst + sslen(szCvt));
@@ -1492,8 +1492,8 @@ inline void	ssadd(std::string& sDst, PCWSTR pW)
 #endif
 
 		sDst.resize(nDst + nAdd + 1);
-		PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()+nDst),
-			nAdd, pW, nSrc);
+		//PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()+nDst),
+		//	nAdd, pW, nSrc);
 
 #ifdef SS_MBCS
 		sDst.resize(nDst + sslen(szCvt));
@@ -1537,8 +1537,8 @@ inline void	ssadd(std::wstring& sDst, const std::string& sSrc)
 		int nDst	= static_cast<int>(sDst.size());
 
 		sDst.resize(nDst + nSrc + 1);
-		PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst),
-			nSrc, sSrc.c_str(), nSrc+1);
+		//PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst),
+		//	nSrc, sSrc.c_str(), nSrc+1);
 
 #ifdef SS_MBCS
 		sDst.resize(nDst + sslen(szCvt));
@@ -1557,8 +1557,8 @@ inline void	ssadd(std::wstring& sDst, PCSTR pA)
 		int nDst	= static_cast<int>(sDst.size());
 
 		sDst.resize(nDst + nSrc + 1);
-		PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst),
-			nSrc, pA, nSrc+1);
+		//PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst),
+		//	nSrc, pA, nSrc+1);
 
 #ifdef SS_MBCS
 		sDst.resize(nDst + sslen(szCvt));
