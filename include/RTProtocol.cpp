@@ -612,7 +612,7 @@ bool CRTProtocol::TakeControl(char* pPassword)
         {
             strncat(pCmd, " ", sizeof(pCmd));
             //strncat(pCmd, pPassword, sizeof(pCmd));
-            strncat(pCmd, pPassword, sizeof(pPassword));
+            strncat(pCmd, pPassword, strlen(pPassword));
         }
     }
     if (SendCommand(pCmd, pResponseStr, sizeof(pResponseStr)))
