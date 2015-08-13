@@ -611,7 +611,8 @@ bool CRTProtocol::TakeControl(char* pPassword)
         if (pPassword[0] != 0)
         {
             strncat(pCmd, " ", sizeof(pCmd));
-            strncat(pCmd, pPassword, sizeof(pCmd));
+            //strncat(pCmd, pPassword, sizeof(pCmd));
+            strncat(pCmd, pPassword, sizeof(pPassword));
         }
     }
     if (SendCommand(pCmd, pResponseStr, sizeof(pResponseStr)))
@@ -3710,7 +3711,9 @@ bool CRTProtocol::SendString(const char* pCmdStr, int nType)
 
     if (mpoNetwork->Send(aSendBuffer, nSize) == false)
     {
-        snprintf (maErrorStr, sizeof(maErrorStr), mpoNetwork->GetErrorString());
+        // Given the definition of GetErrorString, the statement below is just
+        // copy maErrorStr to maErrorStr
+        //snprintf (maErrorStr, sizeof(maErrorStr), mpoNetwork->GetErrorString());
         return false;
     }
 
