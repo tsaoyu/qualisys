@@ -330,7 +330,7 @@ public:
     CRTProtocol();
     ~CRTProtocol();
     bool       Connect(char* pServerAddr, int nPort, int nUDPServerPort = 0, int nMajorVersion = MAJOR_VERSION,
-                       int nMinorVersion = MINOR_VERSION, bool bBigEndian = BIG_ENDIAN);
+                       int nMinorVersion = MINOR_VERSION, bool bBigEndian = IS_BIG_ENDIAN);
     void       Disconnect();
     bool       Connected();
     bool       SetVersion(int nMajorVersion, int nMinorVersion);

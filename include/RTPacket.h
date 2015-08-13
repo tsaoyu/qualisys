@@ -13,7 +13,7 @@
 
 #define MAJOR_VERSION           1
 #define MINOR_VERSION           10
-#define BIG_ENDIAN              false
+#define IS_BIG_ENDIAN           false
 
 #define MAX_CAMERA_COUNT        256
 #define MAX_ANALOG_DEVICE_COUNT 64
@@ -38,7 +38,7 @@ public:
         PacketNone        = 9
     };
 
-    enum EComponentType 
+    enum EComponentType
     {
         Component3d            = 1,
         Component3dNoLabels    = 2,
@@ -173,7 +173,7 @@ public:
     unsigned int     GetImageCameraCount();
     unsigned int     GetImageCameraId(unsigned int nCameraIndex);
     bool             GetImageFormat(unsigned int nCameraIndex, EImageFormat &eImageFormat);
-    bool             GetImageSize(unsigned int nCameraIndex, unsigned int &nWidth, unsigned int &nHeight);                              
+    bool             GetImageSize(unsigned int nCameraIndex, unsigned int &nWidth, unsigned int &nHeight);
     bool             GetImageCrop(unsigned int nCameraIndex, float &fCropLeft, float &fCropTop,
                                       float &fCropRight, float &fCropBottom);
     unsigned int     GetImageSize(unsigned int nCameraIndex);
