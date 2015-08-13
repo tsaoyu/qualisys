@@ -327,7 +327,7 @@
 #ifndef STDSTRING_H
 #define STDSTRING_H
 
-#pragma warning (disable : 4996)
+//#pragma warning (disable : 4996)
 
 // When using VC, turn off browser references
 // Turn off unavoidable compiler warnings
@@ -1342,8 +1342,8 @@ inline void	ssasn(std::string& sDst, PCWSTR pW)
 #endif
 
 		sDst.resize(nDst + 1);
-		PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()), nDst,
-			pW, nSrc);
+		//PCSTR szCvt = StdCodeCvt(const_cast<SS_PTRTYPE>(sDst.data()), nDst,
+		//	pW, nSrc);
 
 		// In MBCS builds, we don't know how long the destination string will be.
 
@@ -3168,7 +3168,7 @@ public:
 	{
 	#ifdef SS_ANSI
 		MYTYPE str;
-		int nLen	= sslen(szFormat) + STD_BUF_SIZE;
+		//int nLen	= sslen(szFormat) + STD_BUF_SIZE;
 		//ssnprintf(str.GetBuffer(nLen), nLen-1, szFormat, argList);
 		str.ReleaseBuffer();
 		*this = str;

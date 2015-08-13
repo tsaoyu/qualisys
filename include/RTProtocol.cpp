@@ -3679,8 +3679,8 @@ char* CRTProtocol::GetErrorString()
 bool CRTProtocol::SendString(const char* pCmdStr, int nType)
 {
     int         nSize;
-    int         nSent      = 0;
-    int         nTotSent   = 0;
+    //int         nSent      = 0;
+    //int         nTotSent   = 0;
     int         nCmdStrLen = strlen(pCmdStr);
     static char aSendBuffer[5000];
 
