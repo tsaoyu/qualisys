@@ -194,7 +194,7 @@ bool CRTProtocol::SetVersion(int nMajorVersion, int nMinorVersion)
             return true;
         }
 
-        if (pResponseStr)
+        if (strlen(pResponseStr))
         {
             snprintf(maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
         }
