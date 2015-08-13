@@ -285,16 +285,29 @@ bool CRTProtocol::CheckLicense(char* pLicenseCode)
 
 bool CRTProtocol::DiscoverRTServer(short nServerPort, bool bNoLocalResponses, short nDiscoverPort)
 {
-    char pData[10];
+    //char pData[10];
     SDiscoverResponse sResponse;
+    union PData{
+      char data_char[10];
+      struct DataInt{
+        unsigned int first;
+        unsigned int second;
+        unsigned short third;
+      }data_int;
+    }pData;
 
-    *((unsigned int*)pData)         = (unsigned int)10;
-    *((unsigned int*)(pData + 4))   = (unsigned int)CRTPacket::PacketDiscover;
-    *((unsigned short*)(pData + 8)) = htons(nServerPort);
+    //*((unsigned int*)pData)         = (unsigned int)10;
+    //*((unsigned int*)(pData + 4))   = (unsigned int)CRTPacket::PacketDiscover;
+    //*((unsigned short*)(pData + 8)) = htons(nServerPort);
+    pData.data_int.first  = (unsigned int)10;
+    pData.data_int.second = (unsigned int)CRTPacket::PacketDiscover;
+    pData.data_int.third  = htons(nServerPort);
+
     if (bBroadcastSocketCreated || mpoNetwork->CreateUDPSocket(nServerPort, true))
     {
         bBroadcastSocketCreated = true;
-        if (mpoNetwork->SendUDPBroadcast(pData, 10, nDiscoverPort))
+        //if (mpoNetwork->SendUDPBroadcast(pData, 10, nDiscoverPort))
+        if (mpoNetwork->SendUDPBroadcast(pData.data_char, 10, nDiscoverPort))
         {
             int          nReceived;
             unsigned int nAddr;
@@ -3700,13 +3713,21 @@ bool CRTProtocol::SendString(const char* pCmdStr, int nType)
 
     if ((mnMajorVersion == 1 && mnMinorVersion == 0) || mbBigEndian)
     {
-        *((unsigned int*)aSendBuffer)       = htonl(nSize);
-        *((unsigned int*)(aSendBuffer + 4)) = htonl(nType);
+        //*((unsigned int*)aSendBuffer)       = htonl(nSize);
+        //*((unsigned int*)(aSendBuffer + 4)) = htonl(nType);
+
+        unsigned int temp = 0;
+        temp = htonl(nSize);
+        memcpy(aSendBuffer, &temp, sizeof(unsigned int));
+        temp = htonl(nType);
+        memcpy(aSendBuffer+4, &temp, sizeof(unsigned int));
     }
     else
     {
-        *((unsigned int*)aSendBuffer)       = nSize;
-        *((unsigned int*)(aSendBuffer + 4)) = nType;
+        //*((unsigned int*)aSendBuffer)       = nSize;
+        //*((unsigned int*)(aSendBuffer + 4)) = nType;
+        memcpy(aSendBuffer, &nSize, sizeof(int));
+        memcpy(aSendBuffer+4, &nType, sizeof(int));
     }
 
     if (mpoNetwork->Send(aSendBuffer, nSize) == false)
