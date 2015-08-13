@@ -552,7 +552,7 @@ bool CRTProtocol::SendTrig()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -581,7 +581,7 @@ bool CRTProtocol::SetQTMEvent(char* pLabel)
                 return true;
             }
         }
-        if (pResponseStr)
+        if (strlen(pResponseStr))
         {
             snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
         }
@@ -622,7 +622,7 @@ bool CRTProtocol::TakeControl(char* pPassword)
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -646,7 +646,7 @@ bool CRTProtocol::ReleaseControl()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -670,7 +670,7 @@ bool CRTProtocol::NewMeasurement()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -693,7 +693,7 @@ bool CRTProtocol::CloseMeasurement()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -716,7 +716,7 @@ bool CRTProtocol::StartCapture()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -739,7 +739,7 @@ bool CRTProtocol::StopCapture()
             return true;
         }
     }
-    if (pResponseStr)
+    if (strlen(pResponseStr))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
     }
@@ -767,7 +767,7 @@ bool CRTProtocol::SaveCapture(char* pFileName, bool bOverwrite)
                 return true;
             }
         }
-        if (pResponseStr)
+        if (strlen(pResponseStr))
         {
             snprintf (maErrorStr, sizeof(maErrorStr), "%s.", pResponseStr);
         }
