@@ -1354,7 +1354,7 @@ bool CRTPacket::GetForceSingleData(unsigned int nPlateIndex, SForce &sForce)
 
 float CRTPacket::SetByteOrder(float* pfData)
 {
-    unsigned int nTmp;
+    //unsigned int nTmp;
 
     /*if (mbBigEndian)
     {
@@ -1366,7 +1366,7 @@ float CRTPacket::SetByteOrder(float* pfData)
 
 double CRTPacket::SetByteOrder(double* pfData)
 {
-    unsigned long nTmp;
+    //unsigned long nTmp;
 
     /*if (mbBigEndian)
     {
