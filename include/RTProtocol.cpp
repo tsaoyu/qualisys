@@ -799,7 +799,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
 
         nRecved = mpoNetwork->Receive(maDataBuff, sizeof(maDataBuff), true, nTimeout);
         //printf("%d",nRecved);
-        if (nRecved < sizeof(int) * 2)
+        if (nRecved < static_cast<int>(sizeof(int) * 2))
         {
             // QTM header not received.
             printf ("Couldn't read header bytes.");
@@ -861,7 +861,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
                         mpFileBuffer = NULL;
                         return NULL;
                     }
-                    if (fwrite(maDataBuff + sizeof(int) * 2, 1, nRecved, mpFileBuffer) != nRecved)
+                    if (static_cast<int>(fwrite(maDataBuff + sizeof(int) * 2, 1, nRecved, mpFileBuffer)) != nRecved)
                     {
                         printf ("Failed to write file to disk.");
                         fclose(mpFileBuffer);
@@ -883,7 +883,7 @@ CRTPacket* CRTProtocol::ReceiveRTPacket(CRTPacket::EPacketType &eType, bool bSki
         {
             if (nFrameSize > sizeof(maDataBuff))
             {
-                printf ("Receive buffer overflow. %d= %d > %d ", nFrameSize,nRecvedTotal,  sizeof(maDataBuff));
+                printf ("Receive buffer overflow. %d= %d > %d ", nFrameSize,nRecvedTotal,  static_cast<int>(sizeof(maDataBuff)));
                 return NULL;
             }
 
@@ -3684,7 +3684,7 @@ bool CRTProtocol::SendString(const char* pCmdStr, int nType)
     int         nCmdStrLen = strlen(pCmdStr);
     static char aSendBuffer[5000];
 
-    if (nCmdStrLen > sizeof(aSendBuffer))
+    if (nCmdStrLen > static_cast<int>(sizeof(aSendBuffer)))
     {
         snprintf (maErrorStr, sizeof(maErrorStr), "String is larger than send buffer.");
         return false;
