@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>qualisys</name>
+  <version>0.0.1</version>
+  <description>Convert msg of Qualisys to ROS compatible format</description>
+
+  <maintainer email="kartikmohta@gmail.com">kartik</maintainer>
+  <maintainer email="sunke.polyu@gmail.com">ke</maintainer>
+  <maintainer email="quchao@seas.upenn.edu">chao</maintainer>
+  <author>kartik</author>
+  <license>Apache 2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <buildtool_depend>message_generation</buildtool_depend>
+  <run_depend>message_runtime</run_depend>
+
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+
+  <export>
+  </export>
+</package>

@@ -23,7 +23,7 @@
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <vicon/Subject.h>
+#include <qualisys/Subject.h>
 
 #include "RTProtocol.h"
 
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
                 // name << "Q" << i;
                 name << poRTProtocol.Get6DOFBodyName(i);
                 ros::Publisher pub_subject =
-                    nh.advertise<vicon::Subject>(name.str(), 10);
+                    nh.advertise<qualisys::Subject>(name.str(), 10);
                 pub_vicon_subject_array.push_back(pub_subject);
                 publishers_initialized_ = true;
               }
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
                 tf::transformStampedTFToMsg(stamped_transform,
                                             geom_stamped_transform);
 
-                vicon::Subject subject_msg;
+                qualisys::Subject subject_msg;
                 subject_msg.header = geom_stamped_transform.header;
                 subject_msg.name = name.str();
                 subject_msg.position.x =
