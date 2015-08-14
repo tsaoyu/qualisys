@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(qualisys)
 
-#find_package(Boost REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
@@ -9,28 +12,57 @@ find_package(catkin REQUIRED COMPONENTS
   tf
 )
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
+# Support new yaml-cpp API (yaml-cpp>=0.5)
+if(${YAMLCPP_FOUND})
+  if(NOT(${YAMLCPP_VERSION} VERSION_LESS 0.5))
+    add_definitions(-DHAVE_NEW_YAMLCPP)
+  endif()
+endif()
+
 add_message_files(DIRECTORY msg)
 generate_messages(DEPENDENCIES geometry_msgs)
 
 catkin_package(
-  #  INCLUDE_DIRS include
-  #  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS message_runtime
+  #INCLUDE_DIRS include
+  #LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS
+    message_runtime
+  DEPENDS
+  boost eigen3 YAMLCPP
   )
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS})
+  ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIR}
+  ${YAMLCPP_INCLUDE_DIRS})
 link_directories(
-  ${catkin_LIBRARY_DIRS})
+  ${catkin_LIBRARY_DIRS}
+)
 
 add_definitions("-std=c++0x -Wall")
 
-add_executable(qualisys_node src/Qualisys2Ros.cpp
-  include/NBC_Markup.cpp
-  include/Network.cpp
-  include/RTPacket.cpp
-  include/RTProtocol.cpp)
-target_link_libraries(qualisys_node
+message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
+
+add_library(qualisys_calib
+  src/QualisysCalib.cpp)
+target_link_libraries(qualisys_calib
   ${catkin_LIBRARIES}
-  )
+  ${YAMLCPP_LIBRARIES})
+
+#add_executable(qualisys_node
+#  src/Qualisys2Ros.cpp
+#  include/NBC_Markup.cpp
+#  include/Network.cpp
+#  include/RTPacket.cpp
+#  include/RTProtocol.cpp)
+#target_link_libraries(qualisys_node
+#  ${catkin_LIBRARIES})
+
+add_executable(qualisys_calib_node
+  src/qualisys_calib.cpp)
+target_link_libraries(qualisys_calib_node
+  qualisys_calib
+  ${catkin_LIBRARIES})
