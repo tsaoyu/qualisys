@@ -31,13 +31,14 @@ catkin_package(
     message_runtime
   DEPENDS
   boost eigen3 YAMLCPP
-  )
+)
 
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}
-  ${YAMLCPP_INCLUDE_DIRS})
+  ${YAMLCPP_INCLUDE_DIRS}
+)
 link_directories(
   ${catkin_LIBRARY_DIRS}
 )
@@ -47,10 +48,20 @@ add_definitions("-std=c++0x -Wall")
 message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
 
 add_library(qualisys_calib
-  src/QualisysCalib.cpp)
+  src/QualisysCalib.cpp
+)
 target_link_libraries(qualisys_calib
   ${catkin_LIBRARIES}
-  ${YAMLCPP_LIBRARIES})
+  ${YAMLCPP_LIBRARIES}
+)
+
+add_library(qualisys_odom
+  src/KalmanFilter.cpp
+  src/QualisysOdom.cpp
+)
+target_link_libraries(qualisys_odom
+  ${catkin_LIBRARIES}
+)
 
 #add_executable(qualisys_node
 #  src/Qualisys2Ros.cpp
@@ -62,7 +73,17 @@ target_link_libraries(qualisys_calib
 #  ${catkin_LIBRARIES})
 
 add_executable(qualisys_calib_node
-  src/qualisys_calib.cpp)
+  src/qualisys_calib.cpp
+)
 target_link_libraries(qualisys_calib_node
   qualisys_calib
-  ${catkin_LIBRARIES})
+  ${catkin_LIBRARIES}
+)
+
+add_executable(qualisys_odom_node
+  src/qualisys_odom.cpp
+)
+target_link_libraries(qualisys_odom_node
+  qualisys_odom
+  ${catkin_LIBRARIES}
+)
