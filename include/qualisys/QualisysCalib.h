@@ -55,8 +55,8 @@ namespace qualisys {
       ros::NodeHandle nh;
 
       std::string calib_marker_pos_file;
-      // TODO: compose the file name from the model name
-      std::string model_zero_pose_file;
+      std::string zero_pose_dir;
+      std::string model_name;
 
       std::map<std::string, Eigen::Vector3d> marker_pos_map;
       std::vector<Eigen::Vector3d> calib_ref_points;

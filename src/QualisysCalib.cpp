@@ -46,8 +46,8 @@ bool QualisysCalib::init() {
   // Load the name of files
   nh.param("calib_marker_pos_file", calib_marker_pos_file,
       std::string("QuadrotorCalib.yaml"));
-  nh.param("model_zero_pose_file", model_zero_pose_file,
-      std::string("QuadrotorCalib.yaml"));
+  nh.param("zero_pose_dir", zero_pose_dir,
+      std::string("calib"));
 
   // Load the positon of markers on the calib stand
   if(!loadCalibMarkerPos(calib_marker_pos_file, marker_pos_map)) {
@@ -365,6 +365,8 @@ void QualisysCalib::subjectCallback(const qualisys::Subject::ConstPtr &msg)
     zero_pose.translate(t);
     zero_pose.rotate(q);
 
+    model_name = msg->name;
+    string model_zero_pose_file = zero_pose_dir+"/"+model_name+".yaml";
     saveZeroPoseToFile(zero_pose, model_zero_pose_file);
     //pose.request.subject_name = msg->name;
     //pose.request.pose.position.x = t_x / count;
@@ -383,6 +385,7 @@ void QualisysCalib::subjectCallback(const qualisys::Subject::ConstPtr &msg)
     Eigen::Vector3d t(msg->position.x, msg->position.y, msg->position.z);
     Eigen::Quaterniond q(msg->orientation.w, msg->orientation.x,
                          msg->orientation.y, msg->orientation.z);
+    model_name = msg->name;
     current_pose.setIdentity();
     current_pose.translate(t);
     current_pose.rotate(q);
