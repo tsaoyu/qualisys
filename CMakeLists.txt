@@ -21,7 +21,12 @@ if(${YAMLCPP_FOUND})
   endif()
 endif()
 
-add_message_files(DIRECTORY msg)
+add_message_files(DIRECTORY msg
+  FILES
+  Marker.msg
+  Markers.msg
+  Subject.msg
+)
 generate_messages(DEPENDENCIES geometry_msgs)
 
 catkin_package(
@@ -54,6 +59,10 @@ target_link_libraries(qualisys_calib
   ${catkin_LIBRARIES}
   ${YAMLCPP_LIBRARIES}
 )
+add_dependencies(qualisys_calib
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
 
 add_library(qualisys_odom
   src/KalmanFilter.cpp
@@ -61,6 +70,10 @@ add_library(qualisys_odom
 )
 target_link_libraries(qualisys_odom
   ${catkin_LIBRARIES}
+)
+add_dependencies(qualisys_odom
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
 )
 
 #add_executable(qualisys_node
