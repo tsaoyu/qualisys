@@ -7,6 +7,7 @@
 #include <geometry_msgs/Pose.h>
 
 #include <qualisys/KalmanFilter.h>
+//#include <qualisys/Subject.h>
 #include <qualisys/Subject.h>
 
 namespace qualisys
@@ -16,6 +17,7 @@ class QualisysOdom
  public:
   QualisysOdom(ros::NodeHandle &nh);
   bool init();
+  //void QualisysCallback(const qualisys::Subject::ConstPtr &qualisys_msg);
   void QualisysCallback(const qualisys::Subject::ConstPtr &qualisys_msg);
 
  private:

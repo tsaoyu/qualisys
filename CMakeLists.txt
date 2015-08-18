@@ -65,12 +65,14 @@ target_link_libraries(qualisys_odom
 
 #add_executable(qualisys_node
 #  src/Qualisys2Ros.cpp
-#  include/NBC_Markup.cpp
-#  include/Network.cpp
-#  include/RTPacket.cpp
-#  include/RTProtocol.cpp)
+#  include/qualisys/NBC_Markup.cpp
+#  include/qualisys/Network.cpp
+#  include/qualisys/RTPacket.cpp
+#  include/qualisys/RTProtocol.cpp
+#)
 #target_link_libraries(qualisys_node
-#  ${catkin_LIBRARIES})
+#  ${catkin_LIBRARIES}
+#)
 
 add_executable(qualisys_calib_node
   src/qualisys_calib.cpp

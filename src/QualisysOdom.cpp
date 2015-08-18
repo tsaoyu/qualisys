@@ -50,6 +50,7 @@ bool QualisysOdom::init() {
   return true;
 }
 
+//void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
 void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
 {
   static ros::Time t_last_proc = msg->header.stamp;
