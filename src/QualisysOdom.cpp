@@ -50,7 +50,6 @@ bool QualisysOdom::init() {
   return true;
 }
 
-//void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
 void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
 {
   static ros::Time t_last_proc = msg->header.stamp;
@@ -135,24 +134,3 @@ void QualisysOdom::PublishTransform(const geometry_msgs::Pose &pose,
 }
 
 } // namespace qualisys
-
-/*
- *int main(int argc, char **argv)
- *{
- *  ros::init(argc, argv, "qualisys_odom");
- *  ros::NodeHandle nh("~");
- *
- *  try
- *  {
- *    qualisys::QualisysOdom qualisys_odom(nh);
- *    qualisys_odom.init();
- *    ros::spin();
- *  }
- *  catch(const std::exception &e)
- *  {
- *    ROS_ERROR("%s: %s", nh.getNamespace().c_str(), e.what());
- *    return 1;
- *  }
- *  return 0;
- *}
- */
