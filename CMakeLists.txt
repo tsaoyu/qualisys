@@ -76,16 +76,16 @@ add_dependencies(qualisys_odom
   ${catkin_EXPORTED_TARGETS}
 )
 
-#add_executable(qualisys_node
-#  src/Qualisys2Ros.cpp
-#  include/qualisys/NBC_Markup.cpp
-#  include/qualisys/Network.cpp
-#  include/qualisys/RTPacket.cpp
-#  include/qualisys/RTProtocol.cpp
-#)
-#target_link_libraries(qualisys_node
-#  ${catkin_LIBRARIES}
-#)
+add_executable(qualisys_node
+  src/qualisys.cpp
+  include/qualisys/NBC_Markup.cpp
+  include/qualisys/Network.cpp
+  include/qualisys/RTPacket.cpp
+  include/qualisys/RTProtocol.cpp
+)
+target_link_libraries(qualisys_node
+  ${catkin_LIBRARIES}
+)
 
 add_executable(qualisys_calib_node
   src/qualisys_calib.cpp

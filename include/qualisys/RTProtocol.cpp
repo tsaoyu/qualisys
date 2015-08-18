@@ -5,7 +5,7 @@
 
 #include <string.h>
 #include <float.h>
-#include <inet.h>
+#include "inet.h"
 
 #define SOCKET_ERROR -1
 
