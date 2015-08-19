@@ -13,13 +13,13 @@ QualisysOdom::QualisysOdom(ros::NodeHandle &n):
 bool QualisysOdom::init() {
   double max_accel;
   nh.param("max_accel", max_accel, 5.0);
-  nh.param("publish_tf", publish_tf_, false);
-  if(publish_tf_ && !nh.getParam("child_frame_id", child_frame_id_)) {
-    throw std::runtime_error("qualisys_odom: child_frame_id required for publishing tf");
-    return false;
-  }
+  //nh.param("publish_tf", publish_tf_, false);
+  //if(publish_tf_ && !nh.getParam("child_frame_id", child_frame_id_)) {
+  //  throw std::runtime_error("qualisys_odom: child_frame_id required for publishing tf");
+  //  return false;
+  //}
 
-  // There should only be one qualisys_fps, so we read from nh
+  // There should only be one vicon_fps, so we read from nh
   double dt, qualisys_fps;
   nh.param("qualisys_fps", qualisys_fps, 100.0);
   ROS_ASSERT(qualisys_fps > 0.0);
@@ -73,7 +73,7 @@ void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
 
   nav_msgs::Odometry odom_msg;
   odom_msg.header = msg->header;
-  odom_msg.child_frame_id = child_frame_id_;
+  odom_msg.child_frame_id = msg->name;
   odom_msg.pose.pose.position.x = state(0);
   odom_msg.pose.pose.position.y = state(1);
   odom_msg.pose.pose.position.z = state(2);
@@ -107,30 +107,30 @@ void QualisysOdom::QualisysCallback(const qualisys::Subject::ConstPtr &msg)
   R_prev = R;
 
   odom_pub_.publish(odom_msg);
-  if(publish_tf_)
-  {
-    PublishTransform(odom_msg.pose.pose, odom_msg.header,
-                     odom_msg.child_frame_id);
-  }
+  //if(publish_tf_)
+  //{
+  //  PublishTransform(odom_msg.pose.pose, odom_msg.header,
+  //                   odom_msg.child_frame_id);
+  //}
 }
 
-void QualisysOdom::PublishTransform(const geometry_msgs::Pose &pose,
-                                 const std_msgs::Header &header,
-                                 const std::string &child_frame_id)
-{
-  // Publish tf
-  geometry_msgs::Vector3 translation;
-  translation.x = pose.position.x;
-  translation.y = pose.position.y;
-  translation.z = pose.position.z;
-
-  geometry_msgs::TransformStamped transform_stamped;
-  transform_stamped.header = header;
-  transform_stamped.child_frame_id = child_frame_id;
-  transform_stamped.transform.translation = translation;
-  transform_stamped.transform.rotation = pose.orientation;
-
-  tf_broadcaster_.sendTransform(transform_stamped);
-}
+//void QualisysOdom::PublishTransform(const geometry_msgs::Pose &pose,
+//                                 const std_msgs::Header &header,
+//                                 const std::string &child_frame_id)
+//{
+//  // Publish tf
+//  geometry_msgs::Vector3 translation;
+//  translation.x = pose.position.x;
+//  translation.y = pose.position.y;
+//  translation.z = pose.position.z;
+//
+//  geometry_msgs::TransformStamped transform_stamped;
+//  transform_stamped.header = header;
+//  transform_stamped.child_frame_id = child_frame_id;
+//  transform_stamped.transform.translation = translation;
+//  transform_stamped.transform.rotation = pose.orientation;
+//
+//  tf_broadcaster_.sendTransform(transform_stamped);
+//}
 
 } // namespace qualisys
