@@ -111,7 +111,7 @@ void QualisysDriver::handlePacketData(CRTPacket* prt_packet) {
             tf::createQuaternionFromRPY(
                 roll * deg2rad, pitch * deg2rad, yaw * deg2rad),
             tf::Vector3(x, y, z) / 1000.),
-        ros::Time::now(), "Qualisys", subject_name);
+        ros::Time::now(), "qualisys", subject_name);
     tf_publisher.sendTransform(stamped_transform);
 
     // Send Subject msg
@@ -120,7 +120,8 @@ void QualisysDriver::handlePacketData(CRTPacket* prt_packet) {
         geom_stamped_transform);
 
     qualisys::Subject subject_msg;
-    subject_msg.header = geom_stamped_transform.header;
+    subject_msg.header =
+      geom_stamped_transform.header;
     subject_msg.name = subject_name;
     subject_msg.position.x =
         geom_stamped_transform.transform.translation.x;
