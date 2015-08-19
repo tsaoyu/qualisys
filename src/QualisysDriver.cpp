@@ -29,7 +29,7 @@ bool QualisysDriver::init() {
   }
   ROS_INFO_STREAM("Connected to " << server_address << ":" << base_port);
 
-  // Set protocol
+  // Get 6DOF settings
   port_protocol.Read6DOFSettings();
 
   return true;
@@ -52,17 +52,18 @@ void QualisysDriver::checkPublishers(const int& body_count) {
 
   // Check publishers for each body
   for(int i = 0; i < body_count; ++i) {
-    std::stringstream name;
-    name << port_protocol.Get6DOFBodyName(i);
+    //std::stringstream name;
+    //name << port_protocol.Get6DOFBodyName(i);
+    string name(port_protocol.Get6DOFBodyName(i));
 
     // Create a publisher for the rigid body
     // if it does not have one.
-    if (subject_publishers.find(name.str()) ==
+    if (subject_publishers.find(name) ==
           subject_publishers.end())
-      subject_publishers[name.str()] =
-        nh.advertise<qualisys::Subject>(name.str(), 10);
+      subject_publishers[name] =
+        nh.advertise<qualisys::Subject>(name, 10);
 
-    subject_indicator[name.str()] = true;
+    subject_indicator[name] = true;
   }
 
   for (auto it = subject_indicator.begin();
@@ -95,9 +96,9 @@ void QualisysDriver::handlePacketData(CRTPacket* prt_packet) {
     }
 
     // ROTATION: GLOBAL (FIXED) X Y Z (R P Y)
-    std::stringstream name;
-    name << port_protocol.Get6DOFBodyName(i);
-    string subject_name = name.str();
+    //std::stringstream name;
+    //name << port_protocol.Get6DOFBodyName(i);
+    string subject_name(port_protocol.Get6DOFBodyName(i));
 
     // Qualisys sometimes flips 180 degrees around the x axis
     if(roll > 90)
