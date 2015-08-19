@@ -1,14 +1,11 @@
 <launch>
   <arg name="model"/>
-  <arg name="child_frame_id" default="$(arg model)/base_link"/>
-  <arg name="publish_tf" default="true"/>
   <arg name="output" default="screen"/>
 
   <node pkg="qualisys" type="qualisys_odom_node" name="$(arg model)"
     output="$(arg output)">
-    <param name="child_frame_id" type="string" value="$(arg child_frame_id)"/>
-    <param name="publish_tf" type="bool" value="$(arg publish_tf)"/>
+    <param name="qualisys_fps" type="double" value="100"/>
     <param name="model" type="string" value="$(arg model)"/>
-    <remap from="~vicon_subject" to="/vicon/$(arg model)"/>
+    <remap from="~qualisys_subject" to="/qualisys/$(arg model)"/>
   </node>
 </launch>
