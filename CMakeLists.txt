@@ -30,7 +30,7 @@ add_message_files(DIRECTORY msg
 generate_messages(DEPENDENCIES geometry_msgs)
 
 catkin_package(
-  #INCLUDE_DIRS include
+  INCLUDE_DIRS include
   #LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
     message_runtime
@@ -51,6 +51,17 @@ link_directories(
 add_definitions("-std=c++0x -Wall")
 
 message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
+
+add_library(qualisys_driver
+  src/QualisysDriver.cpp
+)
+target_link_libraries(qualisys_driver
+  ${catkin_LIBRARIES}
+)
+add_dependencies(qualisys_driver
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
 
 add_library(qualisys_calib
   src/QualisysCalib.cpp
@@ -84,6 +95,7 @@ add_executable(qualisys_node
   include/qualisys/RTProtocol.cpp
 )
 target_link_libraries(qualisys_node
+  qualisys_driver
   ${catkin_LIBRARIES}
 )
 
