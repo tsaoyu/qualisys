@@ -30,12 +30,12 @@ add_message_files(DIRECTORY msg
 generate_messages(DEPENDENCIES geometry_msgs)
 
 catkin_package(
-  INCLUDE_DIRS include
+  #INCLUDE_DIRS include
   #LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
-    message_runtime
+    message_runtime geometry_msgs
   DEPENDS
-  boost eigen3 YAMLCPP
+  Boost Eigen3 YAMLCPP
 )
 
 include_directories(
@@ -44,9 +44,6 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${YAMLCPP_INCLUDE_DIRS}
 )
-link_directories(
-  ${catkin_LIBRARY_DIRS}
-)
 
 add_definitions("-std=c++0x -Wall")
 
@@ -54,6 +51,10 @@ message("EIGEN3_INCLUDE_DIR: " ${EIGEN3_INCLUDE_DIR})
 
 add_library(qualisys_driver
   src/QualisysDriver.cpp
+  include/qualisys/RTProtocol.cpp
+  include/qualisys/NBC_Markup.cpp
+  include/qualisys/RTPacket.cpp
+  include/qualisys/Network.cpp
 )
 target_link_libraries(qualisys_driver
   ${catkin_LIBRARIES}
@@ -89,10 +90,6 @@ add_dependencies(qualisys_odom
 
 add_executable(qualisys_node
   src/qualisys.cpp
-  include/qualisys/NBC_Markup.cpp
-  include/qualisys/Network.cpp
-  include/qualisys/RTPacket.cpp
-  include/qualisys/RTProtocol.cpp
 )
 target_link_libraries(qualisys_node
   qualisys_driver

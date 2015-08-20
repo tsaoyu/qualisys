@@ -16,8 +16,6 @@
  */
 
 #include <ros/ros.h>
-#include <qualisys/Subject.h>
-#include <qualisys/RTProtocol.h>
 #include <qualisys/QualisysDriver.h>
 
 int main(int argc, char *argv[]) {
