@@ -12,7 +12,7 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   - sudo apt-get update -qq
 install: # Use this to install any prerequisites or dependencies necessary to run your build
   - export ROS_DISTRO=hydro
-  - sudo apt-get install -qq -y ros-$ROS_DISTRO-ros-base ros-$ROS_DISTRO-common-msgs ros-$ROS_DISTRO-tf2-ros
+  - sudo apt-get install -qq -y ros-$ROS_DISTRO-ros-base ros-$ROS_DISTRO-common-msgs ros-$ROS_DISTRO-tf
     ros-$ROS_DISTRO-cmake-modules libeigen3-dev yaml-cpp
   # Setup rosdep
   - sudo rosdep init
