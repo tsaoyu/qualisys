@@ -59,17 +59,17 @@ add_dependencies(qualisys_driver
   ${catkin_EXPORTED_TARGETS}
 )
 
-add_library(qualisys_calib
-  src/QualisysCalib.cpp
-)
-target_link_libraries(qualisys_calib
-  ${catkin_LIBRARIES}
-  ${YAMLCPP_LIBRARIES}
-)
-add_dependencies(qualisys_calib
-  ${${PROJECT_NAME}_EXPORTED_TARGETS}
-  ${catkin_EXPORTED_TARGETS}
-)
+#add_library(qualisys_calib
+#  src/QualisysCalib.cpp
+#)
+#target_link_libraries(qualisys_calib
+#  ${catkin_LIBRARIES}
+#  ${YAMLCPP_LIBRARIES}
+#)
+#add_dependencies(qualisys_calib
+#  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#  ${catkin_EXPORTED_TARGETS}
+#)
 
 add_library(qualisys_odom
   src/KalmanFilter.cpp
@@ -91,13 +91,13 @@ target_link_libraries(qualisys_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(qualisys_calib_node
-  src/qualisys_calib.cpp
-)
-target_link_libraries(qualisys_calib_node
-  qualisys_calib
-  ${catkin_LIBRARIES}
-)
+#add_executable(qualisys_calib_node
+#  src/qualisys_calib.cpp
+#)
+#target_link_libraries(qualisys_calib_node
+#  qualisys_calib
+#  ${catkin_LIBRARIES}
+#)
 
 add_executable(qualisys_odom_node
   src/qualisys_odom.cpp
