@@ -21,19 +21,14 @@ if(${YAMLCPP_FOUND})
   endif()
 endif()
 
-add_message_files(DIRECTORY msg
-  FILES
-  Marker.msg
-  Markers.msg
-  Subject.msg
-)
+add_message_files(DIRECTORY msg)
 generate_messages(DEPENDENCIES geometry_msgs)
 
 catkin_package(
   #INCLUDE_DIRS include
   #LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
-    message_runtime geometry_msgs
+    message_runtime geometry_msgs tf
   DEPENDS
   Boost Eigen3 YAMLCPP
 )

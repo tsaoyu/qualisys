@@ -7,17 +7,17 @@
   <maintainer email="kartikmohta@gmail.com">Kartik Mohta</maintainer>
   <maintainer email="sunke.polyu@gmail.com">Ke Sun</maintainer>
   <maintainer email="quchao@seas.upenn.edu">Chao Qu</maintainer>
-  <license>Apache 2</license>
+  <license>Apache-2.0</license>
   <author>Kartik Mohta</author>
   <url type="repository">https://github.com/kartikmohta/qualisys</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
   <depend>geometry_msgs</depend>
   <depend>roscpp</depend>
   <depend>tf</depend>
-  <build_export_depend>message_runtime</build_export_depend>
 
   <export>
   </export>
