@@ -1,27 +1,27 @@
-/* New operating system independend Socket class started 16.11.2012 Sebastian 
+/* New operating system independend Socket class started 16.11.2012 Sebastian
  * Tauscher  Neu schreiben eines Platform unabhängigen SDKs?*/
 
 
 #if defined(_WIN32) && !defined(__CYGWIN__)
   #include <windows.h>
-  #include <winsock2.h> 
+  #include <winsock2.h>
   #include <iphlpapi.h>
 #else //Linux includes
   #include <netinet/tcp.h>
   	#include <sys/time.h>
-	#include <errno.h> 
-	#include <netdb.h> 
-	#include <sys/types.h> 
-	#include <sys/socket.h> 
-	#include <netinet/in.h> 
-	#include <arpa/inet.h> 
+	#include <errno.h>
+	#include <netdb.h>
+	#include <sys/types.h>
+	#include <sys/socket.h>
+	#include <netinet/in.h>
+	#include <arpa/inet.h>
 	#include <sys/ioctl.h>
-	#include <unistd.h> 
+	#include <unistd.h>
 	#include <sys/select.h> /* this might not be needed*/
 	#include <ifaddrs.h>
-	#ifndef SOCKET 
+	#ifndef SOCKET
 		#define  SOCKET int
-	#endif 
+	#endif
 #endif
 
 #include <stdio.h>
@@ -55,11 +55,11 @@ bool CNetwork::InitWinsock()
         return false;
     }
     if (wsaData.wVersion != wVersionRequested)
-    {	
+    {
         SetErrorString();
         return false;
     }
-	
+
 	#endif
 	//-------------------------------------------------------------------
     return true;
@@ -79,7 +79,7 @@ bool CNetwork::Connect(char* pServerAddr, int nPort)
     }
 	#endif
 	//--------------------------------------------------------------------
-	
+
     // Connect to QTM RT server.
 
     mhSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -99,7 +99,7 @@ bool CNetwork::Connect(char* pServerAddr, int nPort)
         }
         sAddr.sin_addr = *((in_addr*)psHost->h_addr_list[0]);
     }
-    
+
     sAddr.sin_port = htons(nPort);
     sAddr.sin_family = AF_INET;
 	int check = connect(mhSocket,  reinterpret_cast<sockaddr*>(&sAddr), sizeof(sAddr));
@@ -115,7 +115,7 @@ bool CNetwork::Connect(char* pServerAddr, int nPort)
 
     int bNoDelay = 1;
 	//---------------------------------------------------------------------
-	
+
     if (setsockopt(mhSocket, IPPROTO_TCP, TCP_NODELAY, (char*)&bNoDelay, sizeof(bNoDelay)))
     {
         SetErrorString();
@@ -159,7 +159,7 @@ bool CNetwork::Connected()
 
 bool CNetwork::CreateUDPSocket(int nUDPPort, bool bBroadcast)
 {
-	
+
     if (nUDPPort > 1023)
     {
         int tempSocket = INVALID_SOCKET;
@@ -169,7 +169,7 @@ bool CNetwork::CreateUDPSocket(int nUDPPort, bool bBroadcast)
         RecvAddr.sin_family = AF_INET;
         RecvAddr.sin_port = htons(nUDPPort);
         RecvAddr.sin_addr.s_addr = INADDR_ANY;
-	
+
         tempSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if (tempSocket != -1)
         {
@@ -194,7 +194,7 @@ bool CNetwork::CreateUDPSocket(int nUDPPort, bool bBroadcast)
                         }
                         else
                         {
-                            snprintf(maErrorStr, sizeof(maErrorStr), "Failed to set socket options for UDP server socket."); 
+                            snprintf(maErrorStr, sizeof(maErrorStr), "Failed to set socket options for UDP server socket.");
                         }
                     }
                     else
@@ -205,17 +205,17 @@ bool CNetwork::CreateUDPSocket(int nUDPPort, bool bBroadcast)
                 }
                 else
                 {
-                    snprintf(maErrorStr, sizeof(maErrorStr), "Failed to bind UDP server socket."); 
+                    snprintf(maErrorStr, sizeof(maErrorStr), "Failed to bind UDP server socket.");
                 }
             }
             else
             {
-                snprintf(maErrorStr, sizeof(maErrorStr), "Failed to make UDP server socket unblocking."); 
+                snprintf(maErrorStr, sizeof(maErrorStr), "Failed to make UDP server socket unblocking.");
             }
         }
         else
         {
-            snprintf(maErrorStr, sizeof(maErrorStr), "Failed to create UDP server socket."); 
+            snprintf(maErrorStr, sizeof(maErrorStr), "Failed to create UDP server socket.");
         }
         close(tempSocket);
     }
@@ -224,15 +224,15 @@ bool CNetwork::CreateUDPSocket(int nUDPPort, bool bBroadcast)
 } // CreateUDPSocket
 
 
-	
+
 
 // Receive a data packet. Data is stored in a local static buffer
-// Returns number of bytes in received message or -1 if there is an error. 
+// Returns number of bytes in received message or -1 if there is an error.
 
 int CNetwork::Receive(char* rtDataBuff, int nDataBufSize, bool bHeader, int nTimeout, unsigned int *ipAddr)
 {
     int         nRecved = 0;
-    int         nRecvedTotal = 0;
+    //int         nRecvedTotal = 0;
     bool IsSOCKET=0, IsUDPSOCKET=0, IsUDPBROADCASTSOCKET= 0;
     sockaddr_in source_addr;
     socklen_t        fromlen = sizeof(source_addr);
@@ -251,27 +251,27 @@ int CNetwork::Receive(char* rtDataBuff, int nDataBufSize, bool bHeader, int nTim
         IsUDPBROADCASTSOCKET = true;
     }
 
-   timeval *pTimeout;
-   timeval  timeout;
+   //timeval *pTimeout = NULL;
+   //timeval  timeout;
 
-    if (nTimeout < 0)
-    {
-        pTimeout = NULL;
-    }
-    else
-    {
-        timeout.tv_sec  = 20000000 / 1000000;
-        timeout.tv_usec = 20000000%1000000;//nTimeout % 1000000;
-        pTimeout = &timeout;
-    }
+    //if (nTimeout < 0)
+    //{
+    //    pTimeout = NULL;
+    //}
+    //else
+    //{
+    //    timeout.tv_sec  = 20000000 / 1000000;
+    //    timeout.tv_usec = 20000000%1000000;//nTimeout % 1000000;
+    //    pTimeout = &timeout;
+    //}
     //-------------------------------------------------------------------
-	//The FD_SET + Select stuff did'nt worked - so tried to work arround 
+	//The FD_SET + Select stuff did'nt worked - so tried to work arround
 	//but this doesn't works...no idea why ---S.Tauscher--------------------
 	//--------------------------------------------------------------------
-	
-	
+
+
     // Wait for activity on the TCP and UDP sockets.
-   // int test[nDataBufSize]; 
+   // int test[nDataBufSize];
     //nRecved = recv(mhSocket, rtDataBuff, bHeader ? 8 : nDataBufSize, 0);
 
     //if ( timeout.tv_sec > 0 )
@@ -335,7 +335,7 @@ bool CNetwork::Send(const char* pSendBuf, int nSize)
 
 
 
-  
+
 
 bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, unsigned int nFilterAddr /* = 0 */ )
 {
@@ -348,13 +348,13 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 			IP_ADAPTER_INFO* pNextAd    = NULL;
 			ULONG ulLen                 = 0;
 			DWORD erradapt;
-			
+
 			// Find all network interfaces.
 			erradapt = ::GetAdaptersInfo(pAdptInfo, &ulLen);
 			if (erradapt == ERROR_BUFFER_OVERFLOW)
 			{
 				pAdptInfo = (IP_ADAPTER_INFO*)malloc(ulLen);
-				erradapt = ::GetAdaptersInfo(pAdptInfo, &ulLen);      
+				erradapt = ::GetAdaptersInfo(pAdptInfo, &ulLen);
 			}
 
 			if (erradapt == ERROR_SUCCESS)
@@ -387,11 +387,11 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 				}
 			}
 			free(pAdptInfo);
-			
-			//-----------Linux Version-S.Tauscher------------------------- 
-			#else  
+
+			//-----------Linux Version-S.Tauscher-------------------------
+			#else
 					struct ifaddrs *pAdptInfo, *pNextAd ;
-					
+
 					// Find all network interfaces.
 					if (getifaddrs(&pAdptInfo) == -1) {
 					   perror("getifaddrs");
@@ -403,7 +403,7 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 						recvAddr.sin_addr.s_addr = 0xffffffff;
 
 						// Send broadcast on all Ethernet interfaces.
-						bool bWaitForResponse = false;
+						//bool bWaitForResponse = false;
 						pNextAd = pAdptInfo;
 						while( pNextAd )
 						{
@@ -411,7 +411,7 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 							{
 								unsigned int nIPaddr = inet_addr(pNextAd->ifa_addr->sa_data);
 								unsigned int nIPmask = inet_addr(pNextAd->ifa_netmask->sa_data);
-								unsigned int nMaskedLocalIp = nFilterAddr | (~nIPmask);
+								//unsigned int nMaskedLocalIp = nFilterAddr | (~nIPmask);
 								recvAddr.sin_addr.s_addr = nIPaddr | (~nIPmask);
 
 									if (sendto(mhUDPBroadcastSocket, pSendBuf, nSize, 0, (sockaddr*)&recvAddr, sizeof(recvAddr)) == nSize)
@@ -424,7 +424,7 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 						}
 					}
 				freeifaddrs(pAdptInfo);
-       #endif  
+       #endif
        //------------------------------------------------------------------
     }
 
@@ -433,13 +433,13 @@ bool CNetwork::SendUDPBroadcast(const char* pSendBuf, int nSize, short nPort, un
 
 
 void CNetwork::SetErrorString()
-{ 
-    char *tError = NULL; 
-    mnLastError  = GetError(); 
-    //DWORD nRet   = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, 
-                                // NULL, mnLastError, 0, reinterpret_cast<LPTSTR>(&tError), 0, NULL); 
+{
+    char *tError = NULL;
+    mnLastError  = GetError();
+    //DWORD nRet   = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                                // NULL, mnLastError, 0, reinterpret_cast<LPTSTR>(&tError), 0, NULL);
 
-    printf(maErrorStr, sizeof(maErrorStr), "%s", tError); 
+    printf(maErrorStr, sizeof(maErrorStr), "%s", tError);
 
     //LocalFree(tError);
 }
@@ -471,7 +471,7 @@ bool CNetwork::IsLocalAddress(unsigned int nAddr)
 		if (erradapt == ERROR_BUFFER_OVERFLOW)
 		{
 			pAdptInfo = (IP_ADAPTER_INFO*)malloc(ulLen);
-			erradapt = ::GetAdaptersInfo(pAdptInfo, &ulLen);      
+			erradapt = ::GetAdaptersInfo(pAdptInfo, &ulLen);
 		}
 
 		if (erradapt == ERROR_SUCCESS)
@@ -493,7 +493,7 @@ bool CNetwork::IsLocalAddress(unsigned int nAddr)
 		free(pAdptInfo);
     #else
 			struct ifaddrs *pAdptInfo, *pNextAd ;
-			
+
 			if (getifaddrs(&pAdptInfo) == -1) {
 			   perror("getifaddrs");
 		   }
@@ -516,7 +516,7 @@ bool CNetwork::IsLocalAddress(unsigned int nAddr)
 				}
 			}
 		freeifaddrs(pAdptInfo);
-       #endif  
+       #endif
 
     return false;
 }
