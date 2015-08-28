@@ -5,7 +5,6 @@
   <node pkg="qualisys" type="qualisys_odom_node" name="$(arg model)"
     output="$(arg output)">
     <param name="qualisys_fps" type="double" value="100"/>
-    <param name="model" type="string" value="$(arg model)"/>
     <remap from="~qualisys_subject" to="/qualisys/$(arg model)"/>
   </node>
 </launch>

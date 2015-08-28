@@ -5,6 +5,5 @@
     output="screen">
     <param name="server_address" value="192.168.254.1"/>
     <param name="base_port" value="22222"/>
-    <param name="calib_files_dir" value="$(find vicon)/calib"/>
   </node>
 </launch>
