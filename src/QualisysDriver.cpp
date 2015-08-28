@@ -8,7 +8,8 @@ namespace qualisys{
 double QualisysDriver::deg2rad = M_PI / 180.0;
 
 QualisysDriver::QualisysDriver(const ros::NodeHandle& n):
-  nh(n) {
+  nh(n),
+  publish_tf(false){
   return;
 }
 
@@ -17,6 +18,7 @@ bool QualisysDriver::init() {
   // of the workspace options
   nh.param("server_address", server_address, string("192.168.254.1"));
   nh.param("server_base_port", base_port, 22222);
+  nh.param("publish_tf", publish_tf, false);
 
   // Connecting to the server
   ROS_INFO_STREAM("Connecting to the Qualisys Motion Tracking system specified at: "
@@ -113,7 +115,8 @@ void QualisysDriver::handlePacketData(CRTPacket* prt_packet) {
                 roll * deg2rad, pitch * deg2rad, yaw * deg2rad),
             tf::Vector3(x, y, z) / 1000.),
         ros::Time::now(), "qualisys", subject_name);
-    tf_publisher.sendTransform(stamped_transform);
+    if (publish_tf)
+      tf_publisher.sendTransform(stamped_transform);
 
     // Send Subject msg
     geometry_msgs::TransformStamped geom_stamped_transform;
