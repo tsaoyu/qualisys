@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(qualisys)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
+set(CMAKE_CXX_FLAGS "-fpermissive")
 find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
